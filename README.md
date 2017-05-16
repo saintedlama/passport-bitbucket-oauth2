@@ -1,7 +1,10 @@
 # Passport-Bitbucket
 
+Forked from [passport-bitbucket-oauth2](https://github.com/bithound/passport-bitbucket-oauth2) to
+include the ability to load email addresses of the user when authenticating from this [pull request](https://github.com/bithound/passport-bitbucket-oauth2/pull/8).
+  
 [Passport](https://github.com/jaredhanson/passport) strategy for authenticating
-with [Bitbucket](https://bitbucket.org/) using the OAuth 2.0 API.
+with [Bitbucket](https://bitbucket.org/) using the OAuth 2.0 API including emails.
 
 This module lets you authenticate using Bitbucket in your Node.js applications.
 By plugging into Passport, Bitbucket authentication can be easily and
@@ -11,7 +14,7 @@ unobtrusively integrated into any application or framework that supports
 
 ## Install
 
-    $ npm install passport-bitbucket-oauth2
+    $ npm install passport-bitbucket-oauth20
 
 ## Usage
 
@@ -54,7 +57,7 @@ application:
 
 ## Examples
 
-For a complete, working example, refer to the [login example](https://github.com/bithound/passport-bitbucket-oauth2/tree/master/examples/login).
+For a complete, working example, refer to the [login example](https://github.com/saintedlama/passport-bitbucket-oauth2/tree/master/examples/login).
 
 ## Tests
 
