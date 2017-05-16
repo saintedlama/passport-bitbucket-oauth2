@@ -1,7 +1,7 @@
 var vows = require('vows');
 var assert = require('assert');
 var util = require('util');
-var BitbucketStrategy = require('passport-bitbucket/strategy');
+var BitbucketStrategy = require('../lib/passport-bitbucket/strategy');
 
 
 vows.describe('BitbucketStrategy').addBatch({
@@ -101,7 +101,7 @@ vows.describe('BitbucketStrategy').addBatch({
         }';
         
         callback(null, body, undefined);
-      }
+      };
       
       return strategy;
     },
