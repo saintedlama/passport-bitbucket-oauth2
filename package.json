@@ -1,34 +1,40 @@
 {
-  "name": "passport-bitbucket-oauth2",
-  "version": "0.1.3",
-  "description": "Bitbucket OAuth2 authentication strategy for Passport.",
-  "keywords": ["passport", "bitbucket", "auth", "authn", "authentication", "identity"],
+  "name": "passport-bitbucket-oauth20",
+  "version": "1.0.0",
+  "description": "Bitbucket OAuth2 authentication strategy for Passport. With emails.",
+  "keywords": [
+    "passport",
+    "bitbucket",
+    "auth",
+    "authn",
+    "authentication",
+    "identity"
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/bithound/passport-bitbucket-oauth2.git"
+    "url": "git://github.com/saintedlama/passport-bitbucket-oauth2.git"
   },
   "bugs": {
-    "url": "http://github.com/bithound/passport-bitbucket-oauth2/issues"
+    "url": "http://github.com/saintedlama/passport-bitbucket-oauth2/issues"
   },
   "author": {
     "name": "Gord Tanner",
     "email": "gtanner@gmail.com",
     "url": "http://bithound.io"
   },
-  "licenses": [ {
-    "type": "MIT",
-    "url": "http://www.opensource.org/licenses/MIT"
-  } ],
+  "license": "MIT",
   "main": "./lib/passport-bitbucket",
   "dependencies": {
-    "pkginfo": "0.2.x",
-    "passport-oauth2": "^1.1.2"
+    "passport-oauth2": "^1.4.0",
+    "pkginfo": "0.4.x"
   },
   "devDependencies": {
-    "vows": "0.6.x"
+    "vows": "0.8.x"
   },
   "scripts": {
-    "test": "NODE_PATH=lib node_modules/.bin/vows test/*-test.js"
+    "test": "vows test/*.js"
   },
-  "engines": { "node": ">= 0.4.0" }
+  "engines": {
+    "node": ">= 4"
+  }
 }
