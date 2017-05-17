@@ -56,7 +56,8 @@ application:
       });
 
 ## Options
-Options are passed to [passport-oauth2](https://www.npmjs.com/package/passport-oauth2).
+Options are passed to [passport-oauth2](https://www.npmjs.com/package/passport-oauth2). So any option value for 
+passport-oauth2 can be used in options.
 
 Extra Options
 
