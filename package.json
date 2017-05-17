@@ -29,10 +29,14 @@
     "pkginfo": "0.4.x"
   },
   "devDependencies": {
-    "vows": "0.8.x"
+    "chai": "^3.5.0",
+    "cross-env": "^5.0.0",
+    "mocha": "^3.4.1",
+    "nyc": "^10.3.2"
   },
   "scripts": {
-    "test": "vows test/*.js"
+    "test": "cross-env NODE_ENV=test mocha --recursive",
+    "cover": "cross-env NODE_ENV=test nyc mocha --recursive"
   },
   "engines": {
     "node": ">= 4"

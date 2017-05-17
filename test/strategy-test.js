@@ -1,180 +1,177 @@
-var vows = require('vows');
-var assert = require('assert');
-var util = require('util');
-var BitbucketStrategy = require('../lib/passport-bitbucket/strategy');
+const { expect } = require('chai');
+const noop = () => {};
 
+const BitbucketStrategy = require('../lib/passport-bitbucket/strategy');
 
-vows.describe('BitbucketStrategy').addBatch({
-  
-  'strategy': {
-    topic: function() {
-      return new BitbucketStrategy({
-        consumerKey: 'ABC123',
-        consumerSecret: 'secret'
+describe('strategy', function() {
+  it('should be named bitbucket', function() {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret'
+    }, noop);
+
+    expect(strategy.name).to.equal('bitbucket');
+  });
+
+  it('should load the user profile', function(done) {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret'
+    }, noop);
+
+    strategy._oauth2.get = userProfileMock;
+
+    strategy.userProfile('token', (err, profile) => {
+      if (err) { return done(err); }
+
+      expect(profile.id).to.exist;
+      expect(profile.displayName).to.exist;
+      expect(profile.username).to.exist;
+      expect(profile.profileUrl).to.exist;
+
+      done();
+    });
+  });
+
+  it('should set raw and json property in user profile', function(done) {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret'
+    }, noop);
+
+    strategy._oauth2.get = userProfileMock;
+
+    strategy.userProfile('token', (err, profile) => {
+      if (err) { return done(err); }
+
+      expect(profile._raw).to.exist;
+      expect(profile._json).to.exist;
+
+      done();
+    });
+  });
+
+  it('should load emails', function(done) {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret'
+    }, noop);
+
+    strategy._oauth2.get = userProfileMock;
+
+    strategy.userProfile('token', (err, profile) => {
+      if (err) { return done(err); }
+
+      expect(profile.emails).to.deep.equal([{
+        primary: true,
+        verified: true,
+        value: 'nomail@please.com',
+      }]);
+
+      done();
+    });
+  });
+
+  it('should not load emails when skipEmails option is set', function(done) {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret',
+      skipEmails: true
+    }, noop);
+
+    strategy._oauth2.get = userProfileMock;
+
+    strategy.userProfile('token', (err, profile) => {
+      if (err) { return done(err); }
+
+      expect(profile.emails).to.not.exist;
+
+      done();
+    });
+  });
+
+  it('should set raw and json property for emails', function(done) {
+    const strategy = new BitbucketStrategy({
+      clientID: 'ABC123',
+      clientSecret: 'secret',
+    }, noop);
+
+    strategy._oauth2.get = userProfileMock;
+
+    strategy.userProfile('token', (err, profile) => {
+      if (err) { return done(err); }
+
+      expect(profile._rawEmails).to.exist;
+      expect(profile._jsonEmails).to.exist;
+
+      done();
+    });
+  });
+});
+
+const userProfileMock = function(url, token, next) {
+  let body;
+
+  if (url === 'https://api.bitbucket.org/2.0/user') {
+    body = `{
+    "username": "saintedlama",
+    "website": "",
+    "display_name": "saintedlama NA",
+    "account_id": "aaaa358:9e0b7167-4cd3-1aax-aaaa-000000000",
+    "links": {
+      "hooks": {
+        "href": "https://api.bitbucket.org/2.0/users/saintedlama/hooks"
       },
-      function() {});
-    },
-    
-    'should be named bitbucket': function (strategy) {
-      assert.equal(strategy.name, 'bitbucket');
-    },
-  },
-  
-  'strategy when loading user profile': {
-    topic: function() {
-      var strategy = new BitbucketStrategy({
-        consumerKey: 'ABC123',
-        consumerSecret: 'secret'
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/users/saintedlama"
       },
-      function() {});
-      
-      // mock
-      strategy._oauth.get = function(url, token, tokenSecret, callback) {
-        var body = '{ \
-            "repositories": [ \
-              { \
-                  "scm": "git", \
-                  "has_wiki": false, \
-                  "last_updated": "2012-01-09 06:12:36", \
-                  "created_on": "2012-01-09 06:11:25", \
-                  "owner": "jaredhanson", \
-                  "logo": null, \
-                  "email_mailinglist": "", \
-                  "is_mq": false, \
-                  "size": 2515, \
-                  "read_only": false, \
-                  "fork_of": null, \
-                  "mq_of": null, \
-                  "state": "available", \
-                  "utc_created_on": "2012-01-09 05:11:25+00:00", \
-                  "website": "", \
-                  "description": "Secret project.", \
-                  "has_issues": false, \
-                  "is_fork": false, \
-                  "slug": "secret", \
-                  "is_private": true, \
-                  "name": "secret", \
-                  "language": "", \
-                  "utc_last_updated": "2012-01-09 05:12:36+00:00", \
-                  "email_writers": true, \
-                  "main_branch": "master", \
-                  "no_public_forks": false, \
-                  "resource_uri": "/api/1.0/repositories/jaredhanson/secret" \
-              }, \
-              { \
-                  "scm": "git", \
-                  "has_wiki": false, \
-                  "last_updated": "2012-01-12 08:46:02", \
-                  "created_on": "2011-12-15 01:03:27", \
-                  "owner": "jaredhanson", \
-                  "logo": null, \
-                  "email_mailinglist": "", \
-                  "is_mq": false, \
-                  "size": 99600, \
-                  "read_only": false, \
-                  "fork_of": null, \
-                  "mq_of": null, \
-                  "state": "available", \
-                  "utc_created_on": "2011-12-15 00:03:27+00:00", \
-                  "website": "", \
-                  "description": "Super secret project.", \
-                  "has_issues": false, \
-                  "is_fork": false, \
-                  "slug": "super-secret", \
-                  "is_private": true, \
-                  "name": "super-secret", \
-                  "language": "", \
-                  "utc_last_updated": "2012-01-12 07:46:02+00:00", \
-                  "email_writers": true, \
-                  "main_branch": "master", \
-                  "no_public_forks": false, \
-                  "resource_uri": "/api/1.0/repositories/jaredhanson/super-secret" \
-              } \
-            ], \
-            "user": { \
-                "username": "jaredhanson", \
-                "first_name": "Jared", \
-                "last_name": "Hanson", \
-                "avatar": "https://secure.gravatar.com/avatar/6c43616eef331e8ad08c7f90a51069a5?d=identicon&s=32", \
-                "resource_uri": "/1.0/users/jaredhanson" \
-            } \
-        }';
-        
-        callback(null, body, undefined);
-      };
-      
-      return strategy;
-    },
-    
-    'when told to load user profile': {
-      topic: function(strategy) {
-        var self = this;
-        function done(err, profile) {
-          self.callback(err, profile);
-        }
-        
-        process.nextTick(function () {
-          strategy.userProfile('token', 'token-secret', {}, done);
-        });
+      "repositories": {
+        "href": "https://api.bitbucket.org/2.0/repositories/saintedlama"
       },
-      
-      'should not error' : function(err, req) {
-        assert.isNull(err);
+      "html": {
+        "href": "https://bitbucket.org/saintedlama/"
       },
-      'should load profile' : function(err, profile) {
-        assert.equal(profile.provider, 'bitbucket');
-        assert.equal(profile.username, 'jaredhanson');
-        assert.equal(profile.displayName, 'Jared Hanson');
-        assert.equal(profile.name.familyName, 'Hanson');
-        assert.equal(profile.name.givenName, 'Jared');
+      "followers": {
+        "href": "https://api.bitbucket.org/2.0/users/saintedlama/followers"
       },
-      'should set raw property' : function(err, profile) {
-        assert.isString(profile._raw);
+      "avatar": {
+        "href": "https://bitbucket.org/account/saintedlama/avatar/32/"
       },
-      'should set json property' : function(err, profile) {
-        assert.isObject(profile._json);
+      "following": {
+        "href": "https://api.bitbucket.org/2.0/users/saintedlama/following"
       },
-    },
-  },
-  
-  'strategy when loading user profile and encountering an error': {
-    topic: function() {
-      var strategy = new BitbucketStrategy({
-        consumerKey: 'ABC123',
-        consumerSecret: 'secret'
-      },
-      function() {});
-      
-      // mock
-      strategy._oauth.get = function(url, token, tokenSecret, callback) {
-        callback(new Error('something went wrong'));
+      "snippets": {
+        "href": "https://api.bitbucket.org/2.0/snippets/saintedlama"
       }
-      
-      return strategy;
     },
-    
-    'when told to load user profile': {
-      topic: function(strategy) {
-        var self = this;
-        function done(err, profile) {
-          self.callback(err, profile);
+    "created_on": "2016-12-11T09:56:33.491205+00:00",
+    "is_staff": false,
+    "location": null,
+    "type": "user",
+    "uuid": "{b1234567-1234-5678-12345678123456781}"
+  }`;
+  } else if (url === 'https://api.bitbucket.org/2.0/user/emails') {
+    body = `{
+    "pagelen": 10,
+    "values": [{
+        "is_primary": true,
+        "is_confirmed": true,
+        "type": "email",
+        "email": "nomail@please.com",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/user/emails/Christoph.Walcher@gmail.com"
+          }
         }
-        
-        process.nextTick(function () {
-          strategy.userProfile('token', 'token-secret', {}, done);
-        });
-      },
-      
-      'should error' : function(err, req) {
-        assert.isNotNull(err);
-      },
-      'should wrap error in InternalOAuthError' : function(err, req) {
-        assert.equal(err.constructor.name, 'InternalOAuthError');
-      },
-      'should not load profile' : function(err, profile) {
-        assert.isUndefined(profile);
-      },
-    },
-  },
+      }
+    ],
+      "page": 1,
+      "size": 1
+    }`;
+  } else {
+    throw new Error(`No mock is configured for ${url}`);
+  }
 
-}).export(module);
+  next(null, body, undefined);
+};
+

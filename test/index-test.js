@@ -1,15 +1,9 @@
-var vows = require('vows');
-var assert = require('assert');
-var util = require('util');
-var bitbucket = require('../lib/passport-bitbucket');
+const { expect } = require('chai');
+const bitbucket = require('../lib/passport-bitbucket');
 
+describe('passport-bitbucket-oauth20', function() {
+  it('should report a version', function() {
+    expect(bitbucket.version).to.be.a('string');
+  });
 
-vows.describe('passport-bitbucket').addBatch({
-  
-  'module': {
-    'should report a version': function (x) {
-      assert.isString(bitbucket.version);
-    },
-  },
-  
-}).export(module);
+});
