@@ -39,6 +39,6 @@
     "cover": "cross-env NODE_ENV=test nyc mocha --recursive"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   }
 }
