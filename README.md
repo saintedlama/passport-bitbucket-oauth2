@@ -1,5 +1,7 @@
 # Passport-Bitbucket
 
+[![Build Status](https://travis-ci.org/saintedlama/passport-bitbucket-oauth2.svg?branch=master)](https://travis-ci.org/saintedlama/passport-bitbucket-oauth2)
+
 Forked from [passport-bitbucket-oauth2](https://github.com/bithound/passport-bitbucket-oauth2) to
 include the ability to load email addresses of the user when authenticating from this [pull request](https://github.com/bithound/passport-bitbucket-oauth2/pull/8).
   
