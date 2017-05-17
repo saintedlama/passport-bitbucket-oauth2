@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('chai').expect;
 const noop = () => {};
 
 const BitbucketStrategy = require('../lib/passport-bitbucket/strategy');

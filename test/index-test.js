@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('chai').expect;
 const bitbucket = require('../lib/passport-bitbucket');
 
 describe('passport-bitbucket-oauth20', function() {
