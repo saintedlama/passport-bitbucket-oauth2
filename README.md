@@ -55,6 +55,14 @@ application:
         res.redirect('/');
       });
 
+## Options
+Options are passed to [passport-oauth2](https://www.npmjs.com/package/passport-oauth2).
+
+Extra Options
+
+* skipEmails: When set to true emails are not loaded from bitbucket. Default: false
+
+
 ## Examples
 
 For a complete, working example, refer to the [login example](https://github.com/saintedlama/passport-bitbucket-oauth2/tree/master/examples/login).
