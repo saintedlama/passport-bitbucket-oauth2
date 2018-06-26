@@ -27,7 +27,8 @@
   "dependencies": {
     "passport-oauth2": "^1.4.0",
     "pkginfo": "0.4.x",
-    "express": "4.0.0"
+    "express": "4.16.0",
+    "snyk": "^1.85.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -38,9 +39,12 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive",
-    "cover": "cross-env NODE_ENV=test nyc mocha --recursive"
+    "cover": "cross-env NODE_ENV=test nyc mocha --recursive",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "engines": {
     "node": ">= 6"
-  }
+  },
+  "snyk": true
 }
