@@ -27,7 +27,7 @@
   "dependencies": {
     "passport-oauth2": "^1.4.0",
     "pkginfo": "0.4.x",
-    "express": "4.16.4"
+    "express": "4.17.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
